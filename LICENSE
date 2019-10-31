@@ -1,9 +1,14 @@
-Copyright (c) 2008, 2019, by Daniel C. Nygren. All rights reserved.
-Permission to use and modify this software for any purpose other than
-commercial use or its incorporation into a commercial product is
-hereby granted without fee. Permission to copy and distribute this software
-only for non-commercial use is also granted without fee, provided that
-the above copyright notice and this entire permission notice appear in
-all copies, and any supporting documentation. The author makes no
-representations about the suitability of this software for any purpose.
-It is provided "as is" without express or implied warranty.
+BSD 0-clause license, "Zero Clause BSD", SPDX: 0BSD
+
+Copyright (C) 2008, 2019 by Daniel C. Nygren <dan.nygren@gmail.com>
+
+Permission to use, copy, modify, and/or distribute this software for any purpose
+with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
+OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
