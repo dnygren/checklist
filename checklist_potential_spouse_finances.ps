@@ -1,0 +1,186 @@
+%!PS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% checklist_potential_spouse_finances.ps - Checklist program in PostScript
+%
+% Adapted from Kevin O'Leary's Book "The Cold Hard Truth on Men, Women, & Money"
+%
+% CALLING SEQUENCE  N/A
+%
+% EXAMPLES          gs checklist*.ps (View on screen with Ghostscript)
+%                   lp checklist*.ps (Print if using PostScript Printer)
+%
+% TARGET SYSTEM     PostScript Level 2 Interpreters
+%
+% DEVELOPED USING   Ghostscript, Xerox WC 5030
+%
+% CALLS             N/A
+%
+% CALLED BY         N/A
+%
+% INPUTS            N/A
+%
+% OUTPUTS           PostScript Interpreter dirties up clean sheets of paper
+%                   or the screen with the output of the program.
+%
+% RETURNS           N/A
+%
+% ERROR HANDLING    N/A
+%
+% WARNINGS          1) This program requires PostScript Level 2.
+%                   2) There are two titles on this checklist, so the checklist
+%                      items start lower on the page.
+%                   (N. Describe anything a maintainer should be aware of)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- Defines ---
+
+/#copies 1 def  % Enter number of copies to print out
+
+% By convention, all my variables have a underscore in them, and my
+% procedures start with a capital letter. (Except for the ubiquitous "inch")
+/inch {72 mul} bind def % Define an inch as 72 points
+
+% *** Enter your checklist title ***
+/checklist_title (Kevin O'Leary's checklist from) def
+/checklist_title_2 ("The Cold Hard Truth on Men, Women, & Money") def
+
+% *** Enter your checklist items ***
+/checklist_strings[
+(How much do you make a year?)
+(How do you imagine splitting our finances in the future?)
+(How much debt do you have? How much is credit card debt?)
+(Do you want kids? How many? \(Yes, this is part of a financial decision.\))
+(Have you ever been bankrupt or had a business that went under?
+ How and why?)
+(How's your credit history now?)
+(Do you borrow, or have you borrowed, money from family or friends?)
+(Do you gamble or buy lottery tickets?)
+(Do you have a pension or anything saved for retirement?)
+(What about cars? Do you lease, \(or make regular payments on a loan\), or own?)
+(Do you have student loans? Are you making regular payments?)
+(Describe your money style. Do you consider yourself a big spender or super frugal?)
+(What's more important to you: fancy holidays or paying down a mortgage?)
+] def
+
+% Paper parameters.
+/paper_width {8.5 inch} def % Enter paper width in points (portrait)
+/paper_height {11 inch} def % Enter paper height in points (portrait)
+/paper_margin {0.25 inch} def % Enter paper margin in points
+
+% If you would rather specify your paper sizes in millimeters, comment
+% out the above three lines and uncomment the below six lines.
+% Note ISO 216 A4 paper = 210mm x 297mm,
+% US Letter paper = 8.5in x 11in = 215.9mm x 279.4mm
+%/paper_width_in_mm {210} def  % Enter paper width in mm
+%/paper_width {paper_width_in_mm 25.4 div inch} def % millimeters/25.4 = inches
+%/paper_height_in_mm {297} def % Enter paper height in mm
+%/paper_height {paper_height_in_mm 25.4 div inch} def
+%/paper_margin_in_mm {6.35} def % Enter paper margin in mm
+%/paper_margin {paper_margin_in_mm 25.4 div inch} def
+
+% ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+% ^^^^^^^^^^ Place code that may need modification above this point. ^^^^^^^^^^
+% ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+% *** Enter your fonts here ***
+/title_font {/Helvetica-Bold} def
+/standard_font {/Helvetica} def
+
+% --- Calculations ---
+
+% Calculate font sizes
+% Define title font size (in points)
+/title_font_size {paper_height 33 div} def
+% Define checklist string font size (in points)
+/checklist_font_size {title_font_size 2 div} def
+
+% Center point for writing page title
+/name_center {paper_width 2 div paper_height paper_margin sub title_font_size
+ sub} def
+/name_center_2 {paper_width 2 div paper_height paper_margin sub title_font_size 2.5 mul sub} def
+
+% Starting point for writing checklist
+/checklist_start_2 {paper_margin paper_height paper_margin sub title_font_size
+2.5 mul sub paper_margin sub} def
+
+
+% --- Procedures ---
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CenterText&Show
+%
+% This procedure is called with the string to be centered on the top of
+% stack followed by the x and y position it is to be centered on.
+%
+% Example: x_position y_position (String) CenterText&Show
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/CenterText&Show
+{
+    dup                 % Make a copy of the string to be centered
+    stringwidth         % Get the width of the string
+    pop                 % Discard y component of string width
+    2 div               % Find x/2 ( 1/2 string width )
+    4 -1 roll exch sub  % Decrement the x position by 1/2 the string width
+    3 -1 roll moveto    % Move to correct spot
+    show                % Show string
+} def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DrawBox
+%
+% This procedure is called with the size of the box on the top of stack.
+%
+% Example: box_size DrawBox
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/DrawBox
+{
+    dup
+    0 exch rlineto
+    dup 0 rlineto
+    0 exch -1 mul rlineto
+    closepath
+    1 setlinewidth
+} def
+
+
+% --- Start program ---
+
+newpath % Start with a clean slate
+
+title_font findfont title_font_size scalefont setfont % Get a nice big font
+
+% Move to the point we want the name centered on and show it
+name_center checklist_title CenterText&Show
+name_center_2 checklist_title_2 CenterText&Show
+
+% Move to where we want to start the checklist
+checklist_start_2 moveto % Move to upper left corner
+
+% Get a smaller font
+standard_font findfont checklist_font_size scalefont setfont
+
+% This forall loop prints out the checklist string array prefixed with a box
+% from top to bottom.
+checklist_strings
+{
+    % Move down enough to print next line
+    0 checklist_font_size 4 add -1 mul rmoveto
+    currentpoint    % Save our starting point for the next line
+    currentpoint    % Save our starting point this line
+    % Move down slightly to better center the checkbox
+    0 checklist_font_size -6 div rmoveto
+    % Draw a checkbox the same size as font
+    checklist_font_size DrawBox
+    moveto          % Move back to the start point
+    % Move past the checkbox
+    checklist_font_size 4 add 0 rmoveto
+    % Put string to print on top of stack
+    3 -1 roll
+    show            % show string
+    moveto          % Move back to the start point
+}forall
+
+stroke
+showpage
